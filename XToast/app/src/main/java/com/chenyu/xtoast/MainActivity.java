@@ -21,17 +21,16 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                XToast.create(MainActivity.this)
-                        .setText("Testing:This is a XToast....")
-                        .setAnimation(AnimationUtils.ANIMATION_SCALE)
-                        .setDuration(XToast.XTOAST_SHORT)
-                        .setOnDisappearListener(new XToast.OnDisappearListener() {
+                XToast.create(MainActivity.this,"你收到了 1 条新消息..",XToast.XTOAST_TYPE_BOTTOM)
+                        .setButtonOnClickListener(new XToast.OnButtonClickListener() {
                             @Override
-                            public void onDisappear(XToast xToast) {
-                                Log.d("cylog","The XToast has disappeared..");
+                            public void click(XToast xToast) {
+                                Log.d("cylog","The button has been clicked.");
                             }
                         })
+                        .setButtonText("取消")
                         .show();
+
 
 
             }
