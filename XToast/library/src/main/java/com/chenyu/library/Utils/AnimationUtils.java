@@ -18,6 +18,7 @@ public class AnimationUtils {
     public static final int ANIMATION_DEFAULT = 0X000;
     public static final int ANIMATION_DRAWER = 0x001;
     public static final int ANIMATION_SCALE = 0x002;
+    public static final int ANIMATION_PULL = 0X003;
 
     public static AnimatorSet getShowAnimation(XToast xToast,int animationType){
         switch (animationType){
@@ -38,6 +39,15 @@ public class AnimationUtils {
                 );
                 scaleSet.setDuration(500);
                 return scaleSet;
+
+            case ANIMATION_PULL:
+                AnimatorSet pullSet = new AnimatorSet();
+                pullSet.playTogether(
+                        ObjectAnimator.ofFloat(xToast.getView(), "translationY", xToast.getView().getMeasuredHeight(), 0),
+                        ObjectAnimator.ofFloat(xToast.getView(), "alpha", 0, 1)
+                );
+                pullSet.setDuration(500);
+                return pullSet;
 
             default:
                 AnimatorSet defaultSet = new AnimatorSet();
@@ -66,6 +76,15 @@ public class AnimationUtils {
                 );
                 scaleSet.setDuration(500);
                 return scaleSet;
+
+            case ANIMATION_PULL:
+                AnimatorSet pullSet = new AnimatorSet();
+                pullSet.playTogether(
+                        ObjectAnimator.ofFloat(xToast.getView(),"translationY",0,xToast.getView().getMeasuredHeight()),
+                        ObjectAnimator.ofFloat(xToast.getView(),"alpha",1,0)
+                );
+                pullSet.setDuration(500);
+                return pullSet;
 
             default:
                 AnimatorSet defaultSet = new AnimatorSet();
