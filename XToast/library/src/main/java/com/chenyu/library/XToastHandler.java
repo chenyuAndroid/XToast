@@ -83,7 +83,16 @@ public class XToastHandler extends Handler {
         }
     }
 
-    private void hideToast(final XToast xToast) {
+    public void hideToast(final XToast xToast) {
+
+        if(!xToast.isShowing()){
+            mQueue.remove(xToast);
+            return;
+        }
+
+        if(!mQueue.contains(xToast))
+            return;
+
         AnimatorSet set = xToast.getHideAnimatorSet();
         set.addListener(new Animator.AnimatorListener() {
             @Override
@@ -93,10 +102,12 @@ public class XToastHandler extends Handler {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                //如果动画结束了，移除队列头部元素以及从界面中移除mView
-                xToast.getViewGroup().removeView(xToast.getView());
-                xToast.getOnDisappearListener().onDisappear(xToast);
-                mQueue.poll();
+                //如果动画结束了，界面中移除mView
+                xToast.getViewRoot().removeView(xToast.getViewGroup());
+                if (xToast.getOnDisappearListener() != null){
+                    xToast.getOnDisappearListener().onDisappear(xToast);
+                }
+
                 sendEmptyMessage(SHOWNEXT_TOAST);
             }
 
@@ -111,6 +122,7 @@ public class XToastHandler extends Handler {
             }
         });
         set.start();
+        mQueue.poll();
     }
 
     private void showToast(XToast xToast) {
